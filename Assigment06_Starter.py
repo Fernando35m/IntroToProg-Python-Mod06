@@ -2,7 +2,7 @@
 # Title: Assignment 06
 # Description: Working with functions in a class,
 #              When the program starts, load each "row" of data
-#              in "ToDoToDoList.txt" into a python Dictionary.
+#              in "ToDoList.txt" into a python Dictionary.
 #              Add each dictionary "row" to a python list "table"
 # ChangeLog (Who,When,What):
 # RRoot,1.1.2030,Created started script
@@ -11,7 +11,7 @@
 
 # Data ---------------------------------------------------------------------- #
 # Declare variables and constants
-file_name_str = "ToDoFile.txt"  # The name of the data file
+file_name_str = "ToDoList.txt"  # The name of the data file
 file_obj = None  # An object that represents a file
 row_dic = {}  # A row of data separated into elements of a dictionary {Task,Priority}
 table_lst = []  # A list that acts as a 'table' of rows
@@ -31,7 +31,7 @@ class Processor:
         :return: (list) of dictionary rows
         """
         list_of_rows.clear()  # clear current data
-        file = open(file_name, "r")
+        file = open("ToDoList.txt", "r")
         for line in file:
             task, priority = line.split(",")
             row = {"Task": task.strip(), "Priority": priority.strip()}
@@ -49,9 +49,7 @@ class Processor:
         :return: (list) of dictionary rows
         """
         row = {"Task": str(task).strip(), "Priority": str(priority).strip()}
-        # TODO: Add Code Here!
-
-
+        list_of_rows.append(row)
         return list_of_rows
 
     @staticmethod
@@ -62,8 +60,10 @@ class Processor:
         :param list_of_rows: (list) you want filled with file data:
         :return: (list) of dictionary rows
         """
-        # TODO: Add Code Here!
-
+        for row in list_of_rows:
+            if row["Task"].lower() == task.lower():
+                list_of_rows.remove(row)
+                break
         return list_of_rows
 
     @staticmethod
@@ -74,9 +74,11 @@ class Processor:
         :param list_of_rows: (list) you want filled with file data:
         :return: (list) of dictionary rows
         """
-        # TODO: Add Code Here!
+        file = open("ToDoList.txt", "w")
+        for row in list_of_rows:
+            file.write('{0},{1}\n'.format(row['Task'], row["Priority"]))
+        file.close()
         return list_of_rows
-
 
 # Presentation (Input/Output)  -------------------------------------------- #
 
@@ -128,7 +130,9 @@ class IO:
 
         :return: (string, string) with task and priority
         """
-        pass  # TODO: Add Code Here!
+        task = str(input("What is the task? : ")).strip()
+        priority = str(input("What is the priority? : ")).strip()
+        return task, priority
 
     @staticmethod
     def input_task_to_remove():
@@ -136,17 +140,19 @@ class IO:
 
         :return: (string) with task
         """
-        pass  # TODO: Add Code Here!
+        task = str(input("What is the name of task you wish to remove? : ")).strip()
+        print()
+        return task
 
 
 # Main Body of Script  ------------------------------------------------------ #
 
 
-# Step 1 - When the program starts, Load data from ToDoFile.txt.
-Processor.read_data_from_file( file_name=file_name_str, list_of_rows=table_lst)  # read file data
+# Step 1 - When the program starts, Load data from ToDoList.txt.
+Processor.read_data_from_file(file_name=file_name_str, list_of_rows=table_lst)  # read file data
 
 # Step 2 - Display a menu of choices to the user
-while (True):
+while True:
     # Step 3 Show current data
     IO.output_current_tasks_in_list(list_of_rows=table_lst)  # Show current data in the list/table
     IO.output_menu_tasks()  # Shows menu
@@ -164,7 +170,7 @@ while (True):
         continue  # to show the menu
 
     elif choice_str == '3':  # Save Data to File
-        table_lst = Processor .write_data_to_file(file_name=file_name_str, list_of_rows=table_lst)
+        table_lst = Processor.write_data_to_file(file_name=file_name_str, list_of_rows=table_lst)
         print("Data Saved!")
         continue  # to show the menu
 

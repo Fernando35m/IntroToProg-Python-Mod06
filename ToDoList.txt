@@ -1,0 +1,5 @@
+Run,Low
+Fish,Low
+Grade,Medium
+Hike,Low
+Code,High
